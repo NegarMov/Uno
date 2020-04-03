@@ -3,7 +3,7 @@ import java.util.HashMap;
 public class Card {
 
     // List of the used color in this program
-    protected final HashMap<String, String> colorsList;
+    protected static HashMap<String, String> colorsList;
     // The score of the card
     protected int score;
     // The color of the card
@@ -51,5 +51,21 @@ public class Card {
      */
     public String getAppearanceLine(int line, boolean hidden) {
         return colorsList.get("BLACK") + cardsAppearance[10].substring(19*line, 19*line + 18) + colorsList.get("RESET") + " ";
+    }
+
+    /**
+     * Get the list of the colors in this game.
+     * @return colorList field.
+     */
+    static HashMap<String, String> getColorsList() {
+        return colorsList;
+    }
+
+    /**
+     * Get the color of the card.
+     * @return color field.
+     */
+    public String getColor() {
+        return color;
     }
 }
