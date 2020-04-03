@@ -2,11 +2,20 @@ import java.util.HashMap;
 
 public class Card {
 
+    // List of the used color in this program
     protected final HashMap<String, String> colorsList;
+    // The score of the card
     protected int score;
+    // The color of the card
     protected String color;
+    // The string which represents the card's appearance
     protected String[] cardsAppearance;
 
+    /**
+     * Create a new card.
+     * @param score The score of the new card.
+     * @param color The color of the new card.
+     */
     public Card(int score, String color) {
         this.score = score;
         this.color = color;
@@ -20,21 +29,27 @@ public class Card {
         colorsList.put("WHITE", "\u001B[47m");
         colorsList.put("RESET", "\u001B[0m");
         cardsAppearance[10] = "┌────────────────┐\n" +
-                            "│.0.......@@@@@..│\n" +
-                            "│......@@@@@@@@@.│\n" +
-                            "│.....@@@@@@@@@@@│\n" +
-                            "│...@@@....@@@@@@│\n" +
-                            "│..@@@..@@..@@@@@│\n" +
-                            "│.@@@@.@@@@.@@@@.│\n" +
-                            "│@@@@@..@@..@@@..│\n" +
-                            "│@@@@@@....@@@...│\n" +
-                            "│@@@@@@@@@@@.....│\n" +
-                            "│.@@@@@@@@@......│\n" +
-                            "│..@@@@@.......0.│\n" +
+                            "│................│\n" +
+                            "│................│\n" +
+                            "│................│\n" +
+                            "│................│\n" +
+                            "│................│\n" +
+                            "│................│\n" +
+                            "│................│\n" +
+                            "│................│\n" +
+                            "│................│\n" +
+                            "│................│\n" +
+                            "│................│\n" +
                             "└────────────────┘\n";
     }
 
-    public String getAppearanceLine(int line) {
-        return "";
+    /**
+     * Get the 'line'th line of the string which represents the card's look.
+     * @param line The line of the the string which represents the card's look.
+     * @param hidden Shows if the card is hidden or not.
+     * @return The 'line'th line of the string which represents the card's look.
+     */
+    public String getAppearanceLine(int line, boolean hidden) {
+        return colorsList.get("BLACK") + cardsAppearance[10].substring(19*line, 19*line + 18) + colorsList.get("RESET") + " ";
     }
 }

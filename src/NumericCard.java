@@ -1,7 +1,13 @@
 public class NumericCard extends Card {
 
+    // The number on the card
     private int number;
 
+    /**
+     * Create a new numeric card.
+     * @param color The color of the card.
+     * @param number The number on the card.
+     */
     public NumericCard(String color, int number) {
         super(number, color);
         this.number = number;
@@ -138,8 +144,16 @@ public class NumericCard extends Card {
                             "└────────────────┘\n";
     }
 
+    /**
+     * Get the 'line'th line of the string which represents the card's look.
+     * @param line The line of the the string which represents the card's look.
+     * @param hidden Shows if the card is hidden or not.
+     * @return The 'line'th line of the string which represents the card's look.
+     */
     @Override
-    public String getAppearanceLine(int line) {
+    public String getAppearanceLine(int line, boolean hidden) {
+        if (hidden)
+            return super.getAppearanceLine(line, true);
         String ans = "";
         for (int i=19*line; i<19*(line+1); i++) {
             if (cardsAppearance[number].charAt(i)=='\n')
