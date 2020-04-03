@@ -24,7 +24,7 @@ public class Player {
      * @param playerName The name of the player to show at the top.
      */
     public void showCards(String playerName) {
-        System.out.println("\n\n" + playerName + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        System.out.println("\n\n" + playerName + " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         for (int i=0; i<13; i++) {
             for (Card card: cardsList)
                 if (playerName=="You")
