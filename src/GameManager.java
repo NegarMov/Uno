@@ -8,15 +8,16 @@ public class GameManager {
     // List of the UNO game cards
     private ArrayList<Card> cards;
     // Number of players
-    private int numberOfPlayers;
+    static int numberOfPlayers;
     // Current card on the table
     private Card cardOnTable;
     // The number of the player whose turn is now
-    private int turn;
+    static int turn;
     // The direction of the rotation between players
-    private int direction; // [+1-> CW, -1-> ACW]
+    static int direction; // [+1-> CW, -1-> ACW]
+    static int plusCards;
     // The color of the card on table
-    private String colorOnTable;
+    static String colorOnTable;
 
     public GameManager(int numberOfPlayers) {
 
@@ -24,6 +25,7 @@ public class GameManager {
         cards = new ArrayList<>();
         this.numberOfPlayers = numberOfPlayers;
         direction = 1;
+        plusCards = 0;
 
         // Adding UNO cards to the game
         String[] colors = {"BLUE", "RED", "GREEN", "YELLOW"};
@@ -62,6 +64,30 @@ public class GameManager {
         colorOnTable = cardOnTable.getColor();
     }
 
+    static void addPlusCards(int plusCards) {
+        GameManager.plusCards += plusCards;
+    }
+
+    static void setPlusCards(int plusCards) {
+        GameManager.plusCards = plusCards;
+    }
+
+    static void setColorOnTable(String color) {
+        colorOnTable = color;
+    }
+
+    public Card getCardOnTable() {
+        return cardOnTable;
+    }
+
+    static void skipTurn() {
+        turn = (turn + direction) % numberOfPlayers;
+    }
+
+    static void reverseDirection() {
+        direction = -1 * direction;
+    }
+
     public void showPlayersCards() {
         players.get(0).showCards("You");
         for (int i=1; i<numberOfPlayers; i++)
@@ -86,6 +112,7 @@ public class GameManager {
     public void runGame() {
         showPlayersCards();
         showTable();
+        turn = (turn + direction) % numberOfPlayers;
     }
 
 }

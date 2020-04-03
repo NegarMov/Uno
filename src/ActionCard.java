@@ -85,4 +85,14 @@ public class ActionCard extends Card {
         }
         return ans;
     }
+
+    @Override
+    public void putOnTable() {
+        if (type=="Skip")
+            GameManager.skipTurn();
+        else if (type=="Rev")
+            GameManager.reverseDirection();
+        else
+            GameManager.addPlusCards(2);
+    }
 }

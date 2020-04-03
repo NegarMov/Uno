@@ -68,4 +68,7 @@ public class Card {
     public String getColor() {
         return color;
     }
+
+    public void putOnTable() {
+    }
 }

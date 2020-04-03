@@ -3,6 +3,8 @@ import java.util.ArrayList;
 public class Player {
     // The list of the cards player owns
     private ArrayList<Card> cardsList;
+    // The list of the valid cards in this round
+    private ArrayList<Card> validCards;
 
     /**
      * Create a new player.
@@ -33,5 +35,13 @@ public class Player {
                     System.out.print(card.getAppearanceLine(i, true));
             System.out.println();
         }
+    }
+
+    private void selectValidCards(Card cardToCheck) {
+        validCards.clear();
+        for (Card card: cardsList)
+            if (cardToCheck.getColor().equals(card.getColor()) ||
+                    (card instanceof NumericCard && cardToCheck instanceof NumericCard && ((NumericCard) card).getNumber()==((NumericCard) cardToCheck).getNumber()))
+                validCards.add(card);
     }
 }

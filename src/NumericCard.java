@@ -144,6 +144,10 @@ public class NumericCard extends Card {
                             "└────────────────┘\n";
     }
 
+    public int getNumber() {
+        return number;
+    }
+
     /**
      * Get the 'line'th line of the string which represents the card's look.
      * @param line The line of the the string which represents the card's look.
