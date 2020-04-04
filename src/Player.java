@@ -36,7 +36,7 @@ public class Player {
         System.out.println("\n\n" + playerName + " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         for (int i=0; i<13; i++) {
             for (Card card: cardsList)
-                if (playerName=="You")
+                if (playerName.equals("You"))
                     System.out.print(card.getAppearanceLine(i, false));
                 else
                     System.out.print(card.getAppearanceLine(i, true));
@@ -48,11 +48,14 @@ public class Player {
         return whoIsPlayer;
     }
 
+    /**
+     * Set the list of the valid cards according to the game's rules in this round.
+     */
     private void selectValidCards() {
         validCards.clear();
         Card cardToCheck = GameManager.getCardOnTable();
         for (Card card : cardsList)
-            if (cardToCheck.getColor().equals(card.getColor()) && card.getColor()!="BLACK" ||
+            if (GameManager.getColorOnTable().equals(card.getColor()) && card.getColor()!="BLACK" ||
                     (card instanceof NumericCard && cardToCheck instanceof NumericCard && ((NumericCard) card).getNumber() == ((NumericCard) cardToCheck).getNumber()) ||
                         card instanceof ActionCard && cardToCheck instanceof ActionCard && ((ActionCard) card).getType() == ((ActionCard) cardToCheck).getType())
                 validCards.add(card);
@@ -62,6 +65,23 @@ public class Player {
                     validCards.add(card);
     }
 
+    /**
+     * Take a random card from stack and play it if possible.
+     */
+    private void drawRandomCard() {
+        Card randomCard = GameManager.giveRandomCard();
+        addCard(randomCard);
+        System.out.println(">Takes a card from stack. (" + randomCard.toString() + ")");
+        selectValidCards();
+        if (validCards.size()!=0) {
+            validCards.get(0).putOnTable(this);
+            cardsList.remove(validCards.get(0));
+        }
+    }
+
+    /**
+     * Run a turn for a human player.
+     */
     public void computerPlay() {
         try
         {
@@ -78,22 +98,18 @@ public class Player {
             validCards.get(cardNumber).putOnTable(this);
             cardsList.remove(validCards.get(cardNumber));
         }
-        else {
-            addCard(GameManager.giveRandomCard());
-            selectValidCards();
-            if (validCards.size()!=0) {
-                validCards.get(0).putOnTable(this);
-                cardsList.remove(validCards.get(0));
-            }
-            else
-                System.out.println(">Takes a card from stack.");
-        }
+        else
+            drawRandomCard();
     }
 
-    public String colorPrefrence() {
+    /**
+     * Show the common color of the player's cards.
+     * @return The common color among the player's cards.
+     */
+    public String colorPreference() {
         HashMap<String, Integer> colorsNumber = new HashMap<>();
         for (Card card : cardsList) {
-            if (card.color!="BLACK")
+            if (!card.color.equals("BLACK"))
                 if (colorsNumber.containsKey(card.color))
                     colorsNumber.replace(card.color, colorsNumber.get(card.color)+1);
                 else
@@ -109,6 +125,9 @@ public class Player {
         return maxColor;
     }
 
+    /**
+     * Run a turn for a human player.
+     */
     public void HumanPlay() {
         selectValidCards();
         if (validCards.size()!=0) {
@@ -121,15 +140,7 @@ public class Player {
             cardsList.remove(validCards.get(chosenCard));
 
         }
-        else {
-            addCard(GameManager.giveRandomCard());
-            selectValidCards();
-            if (validCards.size()!=0) {
-                validCards.get(0).putOnTable(this);
-                cardsList.remove(validCards.get(0));
-            }
-            else
-                System.out.println(">Takes a card from stack.");
-        }
+        else
+            drawRandomCard();
     }
 }

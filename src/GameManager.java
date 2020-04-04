@@ -52,13 +52,14 @@ public class GameManager {
 
         //Creating players and adding 7 cards to them
         Random rnd = new Random();
-        for (int i=0; i<numberOfPlayers; i++)
-            for (int j=0; j<7; j++) {
-                players.add(new Player((i==0)? "HUMAN" : "COMPUTER"));
+        for (int i=0; i<numberOfPlayers; i++) {
+            players.add(new Player((i==0)? "HUMAN" : "COMPUTER"));
+            for (int j = 0; j < 7; j++) {
                 int randomCard = Math.abs(rnd.nextInt()) % cards.size();
                 players.get(i).addCard(cards.get(randomCard));
                 cards.remove(randomCard);
             }
+        }
 
         // Determine the card on the table
         cardOnTable = cards.get(Math.abs(rnd.nextInt()) % cards.size());
@@ -101,6 +102,10 @@ public class GameManager {
         turn = (turn + direction + numberOfPlayers*2) % numberOfPlayers;
     }
 
+    public static String getColorOnTable() {
+        return colorOnTable;
+    }
+
     static void reverseDirection() {
         direction = -1 * direction;
     }
@@ -113,6 +118,10 @@ public class GameManager {
         return cardOnTable;
     }
 
+    /**
+     * Take a random card out of stack.
+     * @return A random card from the stack.
+     */
     static Card giveRandomCard() {
         Random rnd = new Random();
         Card randomCard = cards.get(Math.abs(rnd.nextInt()) % cards.size());
@@ -120,12 +129,18 @@ public class GameManager {
         return randomCard;
     }
 
+    /**
+     * Show all the cards of the players
+     */
     public void showPlayersCards() {
         players.get(0).showCards("You");
         for (int i=1; i<numberOfPlayers; i++)
             players.get(i).showCards("Player" + (i+1));
     }
 
+    /**
+     * Show the table in this round.
+     */
     public void showTable() {
         System.out.println("┌─────────────────────────────────────────────────┐");
         System.out.println("│                                                 │");
@@ -141,6 +156,9 @@ public class GameManager {
 
     }
 
+    /**
+     * Run a UNO game.
+     */
     public void runGame() {
         while (true) {
             showPlayersCards();

@@ -90,11 +90,15 @@ public class ActionCard extends Card {
         return type;
     }
 
+    /**
+     * Put this card on the table.
+     * @param player The player who puts this card on table.
+     */
     @Override
     public void putOnTable(Player player) {
-        if (type=="Skip")
+        if (type.equals("Skip"))
             GameManager.skipTurn();
-        else if (type=="Rev")
+        else if (type.equals("Rev"))
             GameManager.reverseDirection();
         else
             GameManager.addPlusCards(2);

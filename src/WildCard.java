@@ -83,11 +83,15 @@ public class WildCard extends Card {
         return type;
     }
 
+    /**
+     * Put this card on the table.
+     * @param player The player who puts this card on table.
+     */
     @Override
     public void putOnTable(Player player) {
-        if (type=="+4")
+        if (type.equals("+4"))
             GameManager.setPlusCards(4);
-        if (player.getWhoIsPlayer()=="HUMAN") {
+        if (player.getWhoIsPlayer().equals("HUMAN")) {
             System.out.println("Choose a color to continue the game with:\n1) Red\n2) Blue\n3) Green\n4) Yellow");
             Scanner scn = new Scanner(System.in);
             int ans = scn.nextInt();
@@ -97,9 +101,8 @@ public class WildCard extends Card {
             }
             GameManager.setColorOnTable((ans==1)? "RED" : (ans==2)? "BLUE" : (ans==3)? "GREEN" : "YELLOW");
         }
-        else {
-            GameManager.setColorOnTable(player.colorPrefrence());
-        }
+        else
+            GameManager.setColorOnTable(player.colorPreference());
         super.putOnTable(player);
     }
 

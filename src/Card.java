@@ -69,6 +69,10 @@ public class Card {
         return color;
     }
 
+    /**
+     * Put this card on the table.
+     * @param player The player who puts this card on table.
+     */
     public void putOnTable(Player player) {
         GameManager.setCardOnTable(this);
         if (!(this instanceof WildCard))
