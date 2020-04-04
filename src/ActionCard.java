@@ -86,6 +86,10 @@ public class ActionCard extends Card {
         return ans;
     }
 
+    public String getType() {
+        return type;
+    }
+
     @Override
     public void putOnTable() {
         if (type=="Skip")
@@ -94,5 +98,11 @@ public class ActionCard extends Card {
             GameManager.reverseDirection();
         else
             GameManager.addPlusCards(2);
+        super.putOnTable();
+    }
+
+    @Override
+    public String toString() {
+        return color + " " + type;
     }
 }

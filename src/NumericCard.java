@@ -172,4 +172,9 @@ public class NumericCard extends Card {
         }
         return ans;
     }
+
+    @Override
+    public String toString() {
+        return color + " " + number;
+    }
 }

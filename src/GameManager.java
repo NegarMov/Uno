@@ -6,24 +6,25 @@ public class GameManager {
     // List of the players in the game
     private ArrayList<Player> players;
     // List of the UNO game cards
-    private ArrayList<Card> cards;
+    private static ArrayList<Card> cards;
     // Number of players
-    static int numberOfPlayers;
+    private static int numberOfPlayers;
     // Current card on the table
-    private Card cardOnTable;
+    private static Card cardOnTable;
     // The number of the player whose turn is now
-    static int turn;
+    private static int turn;
     // The direction of the rotation between players
-    static int direction; // [+1-> CW, -1-> ACW]
-    static int plusCards;
+    private static int direction; // [+1-> CW, -1-> ACW]
+    // The number of cards which should be added to the player next round
+    private static int plusCards;
     // The color of the card on table
-    static String colorOnTable;
+    private static String colorOnTable;
 
     public GameManager(int numberOfPlayers) {
 
         players = new ArrayList<>();
         cards = new ArrayList<>();
-        this.numberOfPlayers = numberOfPlayers;
+        GameManager.numberOfPlayers = numberOfPlayers;
         direction = 1;
         plusCards = 0;
 
@@ -62,6 +63,7 @@ public class GameManager {
 
         turn = Math.abs(rnd.nextInt()) % numberOfPlayers;
         colorOnTable = cardOnTable.getColor();
+        cardOnTable.putOnTable();
     }
 
     static void addPlusCards(int plusCards) {
@@ -76,16 +78,27 @@ public class GameManager {
         colorOnTable = color;
     }
 
-    public Card getCardOnTable() {
-        return cardOnTable;
-    }
-
     static void skipTurn() {
         turn = (turn + direction) % numberOfPlayers;
     }
 
     static void reverseDirection() {
         direction = -1 * direction;
+    }
+
+    static void setCardOnTable(Card cardOnTable) {
+        GameManager.cardOnTable = cardOnTable;
+    }
+
+    public static Card getCardOnTable() {
+        return cardOnTable;
+    }
+
+    static Card giveRandomCard() {
+        Random rnd = new Random();
+        Card randomCard = cards.get(Math.abs(rnd.nextInt()) % cards.size());
+        cards.remove(randomCard);
+        return randomCard;
     }
 
     public void showPlayersCards() {
@@ -105,14 +118,24 @@ public class GameManager {
                                     (i==7)? "   ┌─    " : (i==8)? "   └─>   " :
                             "         ") + " │");
         System.out.println("│                                                 │");
-        System.out.println("└─────────────────────────────────────────────────┘");
+        System.out.println("└─────────────────────────────────────────────────┘\n\n");
 
     }
 
     public void runGame() {
         showPlayersCards();
         showTable();
-        turn = (turn + direction) % numberOfPlayers;
+        while (true) {
+            for (int i = 0; i < numberOfPlayers; i++) {
+                if (i != 0)
+                    players.get(i).computerPlay();
+                else
+                    players.get(0).HumanPlay();
+                turn = (turn + direction) % numberOfPlayers;
+                showPlayersCards();
+                showTable();
+            }
+        }
     }
 
 }

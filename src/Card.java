@@ -70,5 +70,12 @@ public class Card {
     }
 
     public void putOnTable() {
+        GameManager.setCardOnTable(this);
+        GameManager.setColorOnTable(color);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
 
 public class Player {
     // The list of the cards player owns
@@ -11,6 +13,7 @@ public class Player {
      */
     public Player() {
         cardsList = new ArrayList<>();
+        validCards = new ArrayList<>();
     }
 
     /**
@@ -37,11 +40,57 @@ public class Player {
         }
     }
 
-    private void selectValidCards(Card cardToCheck) {
+    private void selectValidCards() {
         validCards.clear();
-        for (Card card: cardsList)
+        Card cardToCheck = GameManager.getCardOnTable();
+        for (Card card : cardsList)
             if (cardToCheck.getColor().equals(card.getColor()) ||
-                    (card instanceof NumericCard && cardToCheck instanceof NumericCard && ((NumericCard) card).getNumber()==((NumericCard) cardToCheck).getNumber()))
+                    (card instanceof NumericCard && cardToCheck instanceof NumericCard && ((NumericCard) card).getNumber() == ((NumericCard) cardToCheck).getNumber()) ||
+                        card instanceof ActionCard && cardToCheck instanceof ActionCard && ((ActionCard) card).getType() == ((ActionCard) cardToCheck).getType())
                 validCards.add(card);
+        if (validCards.size()==0)
+            for (Card card : cardsList)
+                if (card instanceof WildCard)
+                    validCards.add(card);
+    }
+
+    public void computerPlay() {
+        selectValidCards();
+        if (validCards.size()!=0) {
+            Random rnd = new Random();
+            int cardNumber = Math.abs(rnd.nextInt()) % validCards.size();
+            validCards.get(cardNumber).putOnTable();
+            cardsList.remove(validCards.get(cardNumber));
+        }
+        else {
+            addCard(GameManager.giveRandomCard());
+            selectValidCards();
+            if (validCards.size()!=0) {
+                validCards.get(0).putOnTable();
+                cardsList.remove(validCards.get(0));
+            }
+        }
+    }
+
+    public void HumanPlay() {
+        selectValidCards();
+        if (validCards.size()!=0) {
+            System.out.println("Choose one of your cards to play.");
+            int i = 1;
+            for (Card card : validCards)
+                System.out.println(i++ + ") " + card.toString());
+            int chosenCard = new Scanner(System.in).nextInt()-1;
+            validCards.get(chosenCard).putOnTable();
+            cardsList.remove(validCards.get(chosenCard));
+
+        }
+        else {
+            addCard(GameManager.giveRandomCard());
+            selectValidCards();
+            if (validCards.size()!=0) {
+                validCards.get(0).putOnTable();
+                cardsList.remove(validCards.get(0));
+            }
+        }
     }
 }
