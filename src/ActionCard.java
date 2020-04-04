@@ -91,14 +91,14 @@ public class ActionCard extends Card {
     }
 
     @Override
-    public void putOnTable() {
+    public void putOnTable(Player player) {
         if (type=="Skip")
             GameManager.skipTurn();
         else if (type=="Rev")
             GameManager.reverseDirection();
         else
             GameManager.addPlusCards(2);
-        super.putOnTable();
+        super.putOnTable(player);
     }
 
     @Override

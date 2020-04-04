@@ -20,6 +20,10 @@ public class GameManager {
     // The color of the card on table
     private static String colorOnTable;
 
+    /**
+     * Create a new Game manager.
+     * @param numberOfPlayers The number of players in this game.
+     */
     public GameManager(int numberOfPlayers) {
 
         players = new ArrayList<>();
@@ -50,7 +54,7 @@ public class GameManager {
         Random rnd = new Random();
         for (int i=0; i<numberOfPlayers; i++)
             for (int j=0; j<7; j++) {
-                players.add(new Player());
+                players.add(new Player((i==0)? "HUMAN" : "COMPUTER"));
                 int randomCard = Math.abs(rnd.nextInt()) % cards.size();
                 players.get(i).addCard(cards.get(randomCard));
                 cards.remove(randomCard);
@@ -63,23 +67,38 @@ public class GameManager {
 
         turn = Math.abs(rnd.nextInt()) % numberOfPlayers;
         colorOnTable = cardOnTable.getColor();
-        cardOnTable.putOnTable();
+        cardOnTable.putOnTable(new Player("MANAGER"));
     }
 
+    /**
+     * Add the number of cards the next player should receive.
+     * @param plusCards The number of cards to add to the plusCard field.
+     */
     static void addPlusCards(int plusCards) {
         GameManager.plusCards += plusCards;
     }
 
+    /**
+     * Set the number of cards the next player should receive.
+     * @param plusCards The number of cards to set the plusCard field to.
+     */
     static void setPlusCards(int plusCards) {
         GameManager.plusCards = plusCards;
     }
 
+    /**
+     * Set The color which other players should continue with.
+     * @param color The color to set the
+     */
     static void setColorOnTable(String color) {
         colorOnTable = color;
     }
 
+    /**
+     * Skip one player's turn.
+     */
     static void skipTurn() {
-        turn = (turn + direction) % numberOfPlayers;
+        turn = (turn + direction + numberOfPlayers*2) % numberOfPlayers;
     }
 
     static void reverseDirection() {
@@ -123,18 +142,20 @@ public class GameManager {
     }
 
     public void runGame() {
-        showPlayersCards();
-        showTable();
         while (true) {
-            for (int i = 0; i < numberOfPlayers; i++) {
-                if (i != 0)
-                    players.get(i).computerPlay();
-                else
-                    players.get(0).HumanPlay();
-                turn = (turn + direction) % numberOfPlayers;
-                showPlayersCards();
-                showTable();
+            showPlayersCards();
+            showTable();
+            if (turn != 0) {
+                System.out.println("[Player " + (turn + 1) + "]");
+                players.get(turn).computerPlay();
             }
+            else {
+                System.out.println("[YOU]");
+                players.get(0).HumanPlay();
+            }
+            turn = (turn + direction + numberOfPlayers*2) % numberOfPlayers;
+            for (int j=0; j<plusCards; j++)
+                players.get(turn).addCard(giveRandomCard());
         }
     }
 

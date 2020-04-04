@@ -69,9 +69,11 @@ public class Card {
         return color;
     }
 
-    public void putOnTable() {
+    public void putOnTable(Player player) {
         GameManager.setCardOnTable(this);
-        GameManager.setColorOnTable(color);
+        if (!(this instanceof WildCard))
+            GameManager.setColorOnTable(color);
+        System.out.println(">Puts " + toString() + " On table.");
     }
 
     @Override
