@@ -68,10 +68,10 @@ public class Player {
     /**
      * Take a random card from stack and play it if possible.
      */
-    private void drawRandomCard() {
+    private void drawRandomCard(String player) {
         Card randomCard = GameManager.giveRandomCard();
         addCard(randomCard);
-        System.out.println(">Takes a card from stack. (" + randomCard.toString() + ")");
+        System.out.println(">Takes a card from stack. " + ((player.equals("HUMAN"))? ("(" + randomCard.toString() + ")") : ""));
         selectValidCards();
         if (validCards.size()!=0) {
             validCards.get(0).putOnTable(this);
@@ -99,7 +99,7 @@ public class Player {
             cardsList.remove(validCards.get(cardNumber));
         }
         else
-            drawRandomCard();
+            drawRandomCard("COMPUTER");
     }
 
     /**
@@ -141,6 +141,6 @@ public class Player {
 
         }
         else
-            drawRandomCard();
+            drawRandomCard("HUMAN");
     }
 }

@@ -100,8 +100,12 @@ public class ActionCard extends Card {
             GameManager.skipTurn();
         else if (type.equals("Rev"))
             GameManager.reverseDirection();
-        else
-            GameManager.addPlusCards(2);
+        else {
+            if ((GameManager.getCardOnTable() instanceof ActionCard && ((ActionCard) GameManager.getCardOnTable()).getType().equals("+2"))
+                || (GameManager.getCardOnTable() instanceof WildCard && ((WildCard) GameManager.getCardOnTable()).getType().equals("+4")))
+                GameManager.addPlusCards(2);
+            else GameManager.setPlusCards(2);
+        }
         super.putOnTable(player);
     }
 

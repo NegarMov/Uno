@@ -171,9 +171,17 @@ public class GameManager {
                 System.out.println("[YOU]");
                 players.get(0).HumanPlay();
             }
-            turn = (turn + direction + numberOfPlayers*2) % numberOfPlayers;
-            for (int j=0; j<plusCards; j++)
-                players.get(turn).addCard(giveRandomCard());
+            skipTurn();
+            if (!((getCardOnTable() instanceof ActionCard && ((ActionCard) getCardOnTable()).getType().equals("+2"))
+                    || (getCardOnTable() instanceof WildCard && ((WildCard) getCardOnTable()).getType().equals("+4")))) {
+                plusCards = 0;
+                System.out.println("Reset plusCards");
+            }
+            else {
+                for (int j=0; j<plusCards; j++)
+                    players.get(turn).addCard(giveRandomCard());
+                skipTurn();
+            }
         }
     }
 
