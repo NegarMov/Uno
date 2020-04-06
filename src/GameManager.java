@@ -28,7 +28,7 @@ public class GameManager {
         players = new ArrayList<>();
         cards = new ArrayList<>();
         GameManager.numberOfPlayers = numberOfPlayers;
-        direction = 1;
+        direction = -1;
         plusCards = 0;
 
         // Adding UNO cards to the game
@@ -155,7 +155,7 @@ public class GameManager {
     public void showPlayersCards() {
         players.get(0).showCards("You");
         for (int i=1; i<numberOfPlayers; i++)
-            players.get(i).showCards("You");//"Player" + (i+1));
+            players.get(i).showCards("Player" + (i+1));
     }
 
     /**
@@ -168,7 +168,7 @@ public class GameManager {
             System.out.println("│ " + new Card(0, "BLACK").getAppearanceLine(i, true) +
                     cardOnTable.getAppearanceLine(i, false) +
                     ((i==5 || i==4)? ("  " + Card.getColorsList().get(colorOnTable) + "░░░" + Card.getColorsList().get("RESET") + "  ") :
-                            (i==7 && direction==1)? "   ┌─>   " : (i==8 && direction==1)? "   └─    " :
+                            (i==7 && direction==-1)? "   ┌─>   " : (i==8 && direction==-1)? "   └─    " :
                                     (i==7)? "   ┌─    " : (i==8)? "   └─>   " :
                             "         ") + " │");
         System.out.println("│                                                 │");

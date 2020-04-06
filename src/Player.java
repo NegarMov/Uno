@@ -160,7 +160,7 @@ public class Player {
                 System.out.println(i++ + ") " + card.toString());
             Scanner scn = new Scanner(System.in);
             int chosenCard = scn.nextInt()-1;
-            while (chosenCard<0 || chosenCard>validCards.size()) {
+            while (chosenCard<0 || chosenCard>=validCards.size()) {
                 System.out.println("This input is invalid. please Enter a number between 0 and " + validCards.size());
                 chosenCard = scn.nextInt()-1;
             }
