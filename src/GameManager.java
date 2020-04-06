@@ -143,6 +143,10 @@ public class GameManager {
      * @return A random card from the stack.
      */
     static Card giveRandomCard() {
+        if (cards.size()==0) {
+            System.out.println("Stack is empty!");
+            skipTurn();
+        }
         Random rnd = new Random();
         Card randomCard = cards.get(Math.abs(rnd.nextInt()) % cards.size());
         cards.remove(randomCard);
@@ -218,15 +222,21 @@ public class GameManager {
 
         // Show final scores
         System.out.println("\n\n<<GAME OVER!>>\nFinal Scores ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        while(players.size()!=0) {
-            int minScore = 108*50, minIndex = 0;
-            for (int i=0; i<players.size(); i++)
-                if (players.get(i).getScore()<minScore) {
-                    minScore = players.get(i).getScore();
-                    minIndex = i;
+        HashMap<String, Integer> playersScores = new HashMap<>();
+        int counter = 1;
+        for (Player player : players)
+            playersScores.put(player.getWhoIsPlayer().equals("HUMAN")? "You" : ("player" + counter++), player.getScore());
+        while(playersScores.size()!=0) {
+            int minScore = 108*50;
+            String minPlayerName = "";
+            for (String playerName : playersScores.keySet()) {
+                if (playersScores.get(playerName)<minScore) {
+                    minScore = playersScores.get(playerName);
+                    minPlayerName = playerName;
                 }
-            System.out.println(((minIndex==0)? "YOU: " : ("Player " + (minIndex + 1) + ": ")) + minScore);
-            players.remove(minIndex);
+            }
+            System.out.println(minPlayerName + " " + minScore);
+            playersScores.remove(minPlayerName);
         }
 
     }
