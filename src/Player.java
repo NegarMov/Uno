@@ -21,6 +21,25 @@ public class Player {
     }
 
     /**
+     * Check if this player has no cards left or not.
+     * @return
+     */
+    public boolean hasZeroCards() {
+        return cardsList.size()==0;
+    }
+
+    /**
+     * Get the score of the player by adding up their cards' score.
+     * @return
+     */
+    public int getScore() {
+        int score = 0;
+        for (Card card : cardsList)
+            score += card.getScore();
+        return score;
+    }
+
+    /**
      * Add a new card to the player's owned cards.
      * @param cardToAdd The card to add to the player's list.
      */
@@ -44,6 +63,10 @@ public class Player {
         }
     }
 
+    /**
+     * Determine who is this player, computer or a human.
+     * @return whoIsPlayer field.
+     */
     public String getWhoIsPlayer() {
         return whoIsPlayer;
     }
@@ -135,7 +158,12 @@ public class Player {
             int i = 1;
             for (Card card : validCards)
                 System.out.println(i++ + ") " + card.toString());
-            int chosenCard = new Scanner(System.in).nextInt()-1;
+            Scanner scn = new Scanner(System.in);
+            int chosenCard = scn.nextInt()-1;
+            while (chosenCard<0 || chosenCard>validCards.size()) {
+                System.out.println("This input is invalid. please Enter a number between 0 and " + validCards.size());
+                chosenCard = scn.nextInt()-1;
+            }
             validCards.get(chosenCard).putOnTable(this);
             cardsList.remove(validCards.get(chosenCard));
 

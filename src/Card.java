@@ -69,6 +69,10 @@ public class Card {
         return color;
     }
 
+    public int getScore() {
+        return score;
+    }
+
     /**
      * Put this card on the table.
      * @param player The player who puts this card on table.

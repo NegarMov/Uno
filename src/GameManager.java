@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 
 public class GameManager {
 
@@ -69,6 +68,11 @@ public class GameManager {
         turn = Math.abs(rnd.nextInt()) % numberOfPlayers;
         colorOnTable = cardOnTable.getColor();
         cardOnTable.putOnTable(new Player("MANAGER"));
+        if (cardOnTable instanceof ActionCard && ((ActionCard) cardOnTable).getType().equals("+2")) {
+            players.get(turn).addCard(giveRandomCard());
+            players.get(turn).addCard(giveRandomCard());
+            skipTurn();
+        }
     }
 
     /**
@@ -102,18 +106,34 @@ public class GameManager {
         turn = (turn + direction + numberOfPlayers*2) % numberOfPlayers;
     }
 
+    /**
+     * Get the color which now rules the table.
+     * @return colorOnTable field
+     */
     public static String getColorOnTable() {
         return colorOnTable;
     }
 
+    /**
+     * Reverse the direction of the game. (Change clockwise into
+     * anticlockwise and anticlockwise to clockwise as well)
+     */
     static void reverseDirection() {
         direction = -1 * direction;
     }
 
+    /**
+     * Change the card which is now the last card on the table.
+     * @param cardOnTable The card to put on table.
+     */
     static void setCardOnTable(Card cardOnTable) {
         GameManager.cardOnTable = cardOnTable;
     }
 
+    /**
+     * Get the last card whihc is now on the table.
+     * @return cardOnTable field.
+     */
     public static Card getCardOnTable() {
         return cardOnTable;
     }
@@ -135,7 +155,7 @@ public class GameManager {
     public void showPlayersCards() {
         players.get(0).showCards("You");
         for (int i=1; i<numberOfPlayers; i++)
-            players.get(i).showCards("Player" + (i+1));
+            players.get(i).showCards("You");//"Player" + (i+1));
     }
 
     /**
@@ -157,10 +177,23 @@ public class GameManager {
     }
 
     /**
-     * Run a UNO game.
+     * Check if the game is over (if any of the players has zero cards left)
+     * or not.
+     * @return True if the game is over and false otherwise.
+     */
+    public boolean isGameOver() {
+        boolean ans = false;
+        for (Player player : players)
+            ans = ans || player.hasZeroCards();
+        return ans;
+    }
+
+    /**
+     * Run a UNO game and show players' scores at the end.
      */
     public void runGame() {
-        while (true) {
+        // Run the UNO game while no player has zero card.
+        while (!isGameOver()) {
             showPlayersCards();
             showTable();
             if (turn != 0) {
@@ -175,7 +208,6 @@ public class GameManager {
             if (!((getCardOnTable() instanceof ActionCard && ((ActionCard) getCardOnTable()).getType().equals("+2"))
                     || (getCardOnTable() instanceof WildCard && ((WildCard) getCardOnTable()).getType().equals("+4")))) {
                 plusCards = 0;
-                System.out.println("Reset plusCards");
             }
             else {
                 for (int j=0; j<plusCards; j++)
@@ -183,6 +215,20 @@ public class GameManager {
                 skipTurn();
             }
         }
+
+        // Show final scores
+        System.out.println("\n\n<<GAME OVER!>>\nFinal Scores ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        while(players.size()!=0) {
+            int minScore = 108*50, minIndex = 0;
+            for (int i=0; i<players.size(); i++)
+                if (players.get(i).getScore()<minScore) {
+                    minScore = players.get(i).getScore();
+                    minIndex = i;
+                }
+            System.out.println(((minIndex==0)? "YOU: " : ("Player " + (minIndex + 1) + ": ")) + minScore);
+            players.remove(minIndex);
+        }
+
     }
 
 }
