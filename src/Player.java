@@ -55,7 +55,7 @@ public class Player {
         System.out.println("\n\n" + playerName + " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         for (int i=0; i<13; i++) {
             for (Card card: cardsList)
-                if (playerName.equals("You"))
+                if (whoIsPlayer.equals("HUMAN"))
                     System.out.print(card.getAppearanceLine(i, false));
                 else
                     System.out.print(card.getAppearanceLine(i, true));

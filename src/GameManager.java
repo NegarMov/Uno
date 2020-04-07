@@ -18,18 +18,21 @@ public class GameManager {
     private static int plusCards;
     // The color of the card on table
     private static String colorOnTable;
+    // Determine if the players are all human or not
+    private String gameMode;
 
     /**
      * Create a new Game manager.
      * @param numberOfPlayers The number of players in this game.
      */
-    public GameManager(int numberOfPlayers) {
+    public GameManager(int numberOfPlayers, String gameMode) {
 
         players = new ArrayList<>();
         cards = new ArrayList<>();
         GameManager.numberOfPlayers = numberOfPlayers;
         direction = -1;
         plusCards = 0;
+        this.gameMode = gameMode;
 
         // Adding UNO cards to the game
         String[] colors = {"BLUE", "RED", "GREEN", "YELLOW"};
@@ -52,7 +55,10 @@ public class GameManager {
         //Creating players and adding 7 cards to them
         Random rnd = new Random();
         for (int i=0; i<numberOfPlayers; i++) {
-            players.add(new Player((i==0)? "HUMAN" : "COMPUTER"));
+            if (gameMode.equals("SP"))
+                players.add(new Player((i==0)? "HUMAN" : "COMPUTER"));
+            else
+                players.add(new Player("HUMAN"));
             for (int j = 0; j < 7; j++) {
                 int randomCard = Math.abs(rnd.nextInt()) % cards.size();
                 players.get(i).addCard(cards.get(randomCard));
@@ -157,9 +163,16 @@ public class GameManager {
      * Show all the cards of the players
      */
     public void showPlayersCards() {
-        players.get(0).showCards("You");
-        for (int i=1; i<numberOfPlayers; i++)
-            players.get(i).showCards("Player" + (i+1));
+        for (int i=0; i<numberOfPlayers; i++)
+            if (gameMode.equals("SP")) {
+                if (players.get(i).getWhoIsPlayer().equals("COMPUTER"))
+                    players.get(i).showCards("Player" + (i + 1));
+                else
+                    players.get(i).showCards("You");
+            }
+            else {
+                players.get(i).showCards("Player" + (i + 1));
+            }
     }
 
     /**
@@ -200,14 +213,19 @@ public class GameManager {
         while (!isGameOver()) {
             showPlayersCards();
             showTable();
-            if (turn != 0) {
-                System.out.println("[Player " + (turn + 1) + "]");
-                players.get(turn).computerPlay();
-            }
+            if (gameMode.equals("SP"))
+                if (players.get(turn).getWhoIsPlayer().equals("COMPUTER")) {
+                    System.out.println("[Player " + (turn + 1) + "]");
+                    players.get(turn).computerPlay();
+                } else {
+                    System.out.println("[YOU]");
+                    players.get(0).HumanPlay();
+                }
             else {
-                System.out.println("[YOU]");
-                players.get(0).HumanPlay();
+                System.out.println("[Player " + (turn + 1) + "]");
+                players.get(turn).HumanPlay();
             }
+
             skipTurn();
             if (!((getCardOnTable() instanceof ActionCard && ((ActionCard) getCardOnTable()).getType().equals("+2"))
                     || (getCardOnTable() instanceof WildCard && ((WildCard) getCardOnTable()).getType().equals("+4")))) {
@@ -225,7 +243,10 @@ public class GameManager {
         HashMap<String, Integer> playersScores = new HashMap<>();
         int counter = 2;
         for (Player player : players)
-            playersScores.put(player.getWhoIsPlayer().equals("HUMAN")? "You" : ("player" + counter++), player.getScore());
+            if (gameMode.equals("SP"))
+                playersScores.put(player.getWhoIsPlayer().equals("HUMAN")? "You" : ("player" + counter++), player.getScore());
+            else
+                playersScores.put((" -player" + ((counter++)-1)), player.getScore());
         while(playersScores.size()!=0) {
             int minScore = 108*50;
             String minPlayerName = "";
