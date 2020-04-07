@@ -223,7 +223,7 @@ public class GameManager {
         // Show final scores
         System.out.println("\n\n<<GAME OVER!>>\nFinal Scores ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         HashMap<String, Integer> playersScores = new HashMap<>();
-        int counter = 1;
+        int counter = 2;
         for (Player player : players)
             playersScores.put(player.getWhoIsPlayer().equals("HUMAN")? "You" : ("player" + counter++), player.getScore());
         while(playersScores.size()!=0) {

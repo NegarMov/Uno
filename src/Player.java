@@ -161,7 +161,7 @@ public class Player {
             Scanner scn = new Scanner(System.in);
             int chosenCard = scn.nextInt()-1;
             while (chosenCard<0 || chosenCard>=validCards.size()) {
-                System.out.println("This input is invalid. please Enter a number between 0 and " + validCards.size());
+                System.out.println("This input is invalid. please Enter a number between 1 and " + validCards.size());
                 chosenCard = scn.nextInt()-1;
             }
             validCards.get(chosenCard).putOnTable(this);
