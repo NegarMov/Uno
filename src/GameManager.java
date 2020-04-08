@@ -74,11 +74,6 @@ public class GameManager {
         turn = Math.abs(rnd.nextInt()) % numberOfPlayers;
         colorOnTable = cardOnTable.getColor();
         cardOnTable.putOnTable(new Player("MANAGER"));
-        if (cardOnTable instanceof ActionCard && ((ActionCard) cardOnTable).getType().equals("+2")) {
-            players.get(turn).addCard(giveRandomCard());
-            players.get(turn).addCard(giveRandomCard());
-            skipTurn();
-        }
     }
 
     /**
@@ -206,36 +201,87 @@ public class GameManager {
     }
 
     /**
+     * Draw cards if there is a draw on table and the player is not going to use
+     * another draw.
+     */
+    private void drawPlusCards() {
+        for (int j=0; j<plusCards; j++)
+            players.get(turn).addCard(giveRandomCard());
+        if (players.get(turn).getWhoIsPlayer().equals("COMPUTER"))
+            System.out.println("\n[Player " + (turn + 1) + "]");
+        else
+            System.out.println(gameMode.equals("SP")? "[YOU]" : ("[Player " + (turn + 1) + "]"));
+        System.out.println(">Draws " + plusCards + " cards.");
+        plusCards = 0;
+        skipTurn();
+    }
+
+    /**
      * Run a UNO game and show players' scores at the end.
      */
     public void runGame() {
+        boolean isFirstRound = true;
         // Run the UNO game while no player has zero card.
         while (!isGameOver()) {
+            // Show table
             showPlayersCards();
             showTable();
-            if (gameMode.equals("SP"))
+            if (plusCards!=0 && players.get(turn).hasDrawCard().size()!=0) {
+                if (isFirstRound)
+                    drawPlusCards();
                 if (players.get(turn).getWhoIsPlayer().equals("COMPUTER")) {
-                    System.out.println("[Player " + (turn + 1) + "]");
-                    players.get(turn).computerPlay();
-                } else {
-                    System.out.println("[YOU]");
-                    players.get(0).HumanPlay();
+                    System.out.println("\n\n[Player " + (turn + 1) + "]");
+                    players.get(turn).hasDrawCard().get(0).putOnTable(players.get(turn));
+                    skipTurn();
                 }
-            else {
-                System.out.println("[Player " + (turn + 1) + "]");
-                players.get(turn).HumanPlay();
+                else {
+                    System.out.println("\n\n" + (gameMode.equals("SP")? "[YOU]" : ("[Player " + (turn + 1) + "]")) + "\n1) Draw cards\n2) Use your draw");
+                    Scanner scn = new Scanner(System.in);
+                    int drawOrNot = scn.nextInt();
+                    while (drawOrNot<1 || drawOrNot>2) {
+                        System.out.println("Please enter a number between 1 and 2.");
+                        drawOrNot = scn.nextInt();
+                    }
+                    if (drawOrNot==2) {
+                        int i = 1;
+                        ArrayList<Card> drawCards = players.get(turn).hasDrawCard();
+                        for (Card drawCard : drawCards)
+                            System.out.println(i++ + ") " + drawCard.toString());
+                        int drawNumber = scn.nextInt();
+                        while (drawNumber<1 || drawNumber>drawCards.size()) {
+                            System.out.println("Please enter a number between 1 and " + drawCards.size());
+                            drawNumber = scn.nextInt();
+                        }
+                        drawCards.get(drawNumber-1).putOnTable(players.get(turn));
+                    }
+                    else {
+                        for (int j=0; j<plusCards; j++)
+                            players.get(turn).addCard(giveRandomCard());
+                        plusCards = 0;
+                    }
+                    skipTurn();
+                }
             }
+            else if (plusCards!=0)
+                drawPlusCards();
+            else {
+                // Play a round
+                if (gameMode.equals("SP"))
+                    if (players.get(turn).getWhoIsPlayer().equals("COMPUTER")) {
+                        System.out.println("[Player " + (turn + 1) + "]");
+                        players.get(turn).computerPlay();
+                    } else {
+                        System.out.println("[YOU]");
+                        players.get(0).HumanPlay();
+                    }
+                else {
+                    System.out.println("[Player " + (turn + 1) + "]");
+                    players.get(turn).HumanPlay();
+                }
 
-            skipTurn();
-            if (!((getCardOnTable() instanceof ActionCard && ((ActionCard) getCardOnTable()).getType().equals("+2"))
-                    || (getCardOnTable() instanceof WildCard && ((WildCard) getCardOnTable()).getType().equals("+4")))) {
-                plusCards = 0;
-            }
-            else {
-                for (int j=0; j<plusCards; j++)
-                    players.get(turn).addCard(giveRandomCard());
                 skipTurn();
             }
+            isFirstRound = false;
         }
 
         // Show final scores

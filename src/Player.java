@@ -80,11 +80,14 @@ public class Player {
         for (Card card : cardsList)
             if (GameManager.getColorOnTable().equals(card.getColor()) && card.getColor()!="BLACK" ||
                     (card instanceof NumericCard && cardToCheck instanceof NumericCard && ((NumericCard) card).getNumber() == ((NumericCard) cardToCheck).getNumber()) ||
-                        card instanceof ActionCard && cardToCheck instanceof ActionCard && ((ActionCard) card).getType() == ((ActionCard) cardToCheck).getType())
+                        card instanceof ActionCard && cardToCheck instanceof ActionCard && ((ActionCard) card).getType() == ((ActionCard) cardToCheck).getType() ||
+                            card instanceof WildCard && ((WildCard) card).getType().equals("WC"))
                 validCards.add(card);
-        if (validCards.size()==0)
+        if (validCards.size()==0 || (validCards.size()==1 && validCards.get(0) instanceof WildCard && ((WildCard) validCards.get(0)).getType().equals("WC")) ||
+                (validCards.size()==2 && ((validCards.get(0) instanceof WildCard && ((WildCard) validCards.get(0)).getType().equals("WC")) ||
+                    (validCards.get(1) instanceof WildCard && ((WildCard) validCards.get(1)).getType().equals("WC")))))
             for (Card card : cardsList)
-                if (card instanceof WildCard)
+                if (card instanceof WildCard && ((WildCard) card).getType().equals("+4"))
                     validCards.add(card);
     }
 
@@ -102,10 +105,20 @@ public class Player {
         }
     }
 
+    public ArrayList<Card> hasDrawCard() {
+        ArrayList<Card> drawCards = new ArrayList<>();
+        selectValidCards();
+        for (Card card : validCards)
+            if (card instanceof ActionCard && ((ActionCard) card).getType().equals("+2")
+                || card instanceof WildCard && ((WildCard) card).getType().equals("+4"))
+                drawCards.add(card);
+        return drawCards;
+    }
+
     /**
      * Run a turn for a human player.
      */
-    public void computerPlay() {
+    public void computerPlay(){
         try
         {
             Thread.sleep(750);
