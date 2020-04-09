@@ -1,3 +1,11 @@
+/**
+ * The class NumericCard represents an UNO game card which has a number on it. This card has its
+ * own color, number, score(Which is equal to the number on the card) and appearance.
+ * Also this class is a subclass of Card.
+ *
+ * @author Negar Movaghatian
+ * @since 2020-04-03
+ */
 public class NumericCard extends Card {
 
     // The number on the card

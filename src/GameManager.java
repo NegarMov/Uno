@@ -1,5 +1,13 @@
 import java.util.*;
 
+/**
+ * GameManager is a class to manage UNO game. It holds a list of UNO cards and sets the basic UNO
+ * setups such as giving each player 7 random cards initially, manages the turn of the players and
+ * the direction of the game and determines when a player should do an action.
+ *
+ * @author Negar Movaghatian
+ * @since 2020-04-03
+ */
 public class GameManager {
 
     // List of the players in the game
@@ -24,6 +32,7 @@ public class GameManager {
     /**
      * Create a new Game manager.
      * @param numberOfPlayers The number of players in this game.
+     * @param gameMode Determines if the game's players are human or computer. ["MP" or "SP"]
      */
     public GameManager(int numberOfPlayers, String gameMode) {
 
@@ -85,14 +94,6 @@ public class GameManager {
     }
 
     /**
-     * Set the number of cards the next player should receive.
-     * @param plusCards The number of cards to set the plusCard field to.
-     */
-    static void setPlusCards(int plusCards) {
-        GameManager.plusCards = plusCards;
-    }
-
-    /**
      * Set The color which other players should continue with.
      * @param color The color to set the
      */
@@ -132,7 +133,7 @@ public class GameManager {
     }
 
     /**
-     * Get the last card whihc is now on the table.
+     * Get the last card which is now on the table.
      * @return cardOnTable field.
      */
     public static Card getCardOnTable() {
@@ -155,7 +156,7 @@ public class GameManager {
     }
 
     /**
-     * Show all the cards of the players
+     * Show all the cards of the players.
      */
     public void showPlayersCards() {
         for (int i=0; i<numberOfPlayers; i++)
@@ -226,6 +227,7 @@ public class GameManager {
             // Show table
             showPlayersCards();
             showTable();
+
             if (plusCards!=0 && players.get(turn).hasDrawCard().size()!=0) {
                 if (isFirstRound)
                     drawPlusCards();
@@ -290,7 +292,7 @@ public class GameManager {
         int counter = 2;
         for (Player player : players)
             if (gameMode.equals("SP"))
-                playersScores.put(player.getWhoIsPlayer().equals("HUMAN")? "You" : ("player" + counter++), player.getScore());
+                playersScores.put(player.getWhoIsPlayer().equals("HUMAN")? "   -You" : ("   -player" + counter++), player.getScore());
             else
                 playersScores.put((" -player" + ((counter++)-1)), player.getScore());
         while(playersScores.size()!=0) {

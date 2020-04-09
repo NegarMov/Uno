@@ -1,5 +1,12 @@
 import java.util.Scanner;
 
+/**
+ * Main class asks if the other players are human or computer and the number of players.
+ * After, it creates a new Game Manager and runs an UNO game.
+ *
+ * @author Negar Movaghatian
+ * @since 2020-04-03
+ */
 public class Main {
     public static void main(String[] args) {
 

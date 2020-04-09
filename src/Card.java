@@ -1,5 +1,13 @@
 import java.util.HashMap;
 
+/**
+ * The class Card represents an UNO game card. A card has its own color, score
+ * and appearance.
+ * Also this class is a parent class of NumericCard, ActionCard and WildCard.
+ *
+ * @author Negar Movaghatian
+ * @since 2020-04-03
+ */
 public class Card {
 
     // List of the used color in this program
@@ -21,6 +29,8 @@ public class Card {
         this.color = color;
         cardsAppearance = new String[11];
         colorsList =  new HashMap<>();
+
+        // Define the colors used in this game.
         colorsList.put("BLACK", "\u001B[100m");
         colorsList.put("RED", "\u001B[41m");
         colorsList.put("GREEN", "\u001B[42m");
@@ -69,6 +79,10 @@ public class Card {
         return color;
     }
 
+    /**
+     * Get the score of this card.
+     * @return The score field.
+     */
     public int getScore() {
         return score;
     }

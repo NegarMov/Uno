@@ -1,5 +1,15 @@
 import java.util.HashMap;
 
+/**
+ * The class ActionCard represents an UNO game card which can perform an action. This card has its
+ * own color, type, score(Which is equal to the number on the card) and appearance. An action card
+ * type can be "Skip" (Skip the next player's turn), "Rev" (Reverse the game's direction) or "+2"
+ * (Draw 2 cards)
+ * Also this class is a subclass of Card.
+ *
+ * @author Negar Movaghatian
+ * @since 2020-04-03
+ */
 public class ActionCard extends Card {
 
     // The type of the card
@@ -100,12 +110,8 @@ public class ActionCard extends Card {
             GameManager.skipTurn();
         else if (type.equals("Rev"))
             GameManager.reverseDirection();
-        else {
-            if ((GameManager.getCardOnTable() instanceof ActionCard && ((ActionCard) GameManager.getCardOnTable()).getType().equals("+2"))
-                || (GameManager.getCardOnTable() instanceof WildCard && ((WildCard) GameManager.getCardOnTable()).getType().equals("+4")))
-                GameManager.addPlusCards(2);
-            else GameManager.setPlusCards(2);
-        }
+        else
+            GameManager.addPlusCards(2);
         super.putOnTable(player);
     }
 

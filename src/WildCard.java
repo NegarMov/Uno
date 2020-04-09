@@ -1,6 +1,15 @@
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
+/**
+ * The class WildCard represents an UNO game card which can perform an action but is also wild!
+ * This card has its own type, score(Which is equal to the number on the card) and appearance. a
+ * wild card type can be either "WC" (Stands for Wild Color- Choose the color to continue the game with)
+ * or "+4" (Draw 4 cards)
+ * Also this class is a subclass of Card.
+ *
+ * @author Negar Movaghatian
+ * @since 2020-04-03
+ */
 public class WildCard extends Card {
 
     // The type of the card
@@ -79,6 +88,10 @@ public class WildCard extends Card {
         return ans;
     }
 
+    /**
+     * Get the type of this card.
+     * @return The type field.
+     */
     public String getType() {
         return type;
     }
@@ -89,12 +102,8 @@ public class WildCard extends Card {
      */
     @Override
     public void putOnTable(Player player) {
-        if (type.equals("+4")) {
-            if ((GameManager.getCardOnTable() instanceof ActionCard && ((ActionCard) GameManager.getCardOnTable()).getType().equals("+2"))
-                    || (GameManager.getCardOnTable() instanceof WildCard && ((WildCard) GameManager.getCardOnTable()).getType().equals("+4")))
-                GameManager.addPlusCards(4);
-            else GameManager.setPlusCards(4);
-        }
+        if (type.equals("+4"))
+            GameManager.addPlusCards(4);
         if (player.getWhoIsPlayer().equals("HUMAN")) {
             System.out.println("Choose a color to continue the game with:\n1) Red\n2) Blue\n3) Green\n4) Yellow");
             Scanner scn = new Scanner(System.in);

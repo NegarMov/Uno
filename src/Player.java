@@ -1,8 +1,13 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
+/**
+ * The class Player represents a player. It has a list of the player's cards
+ * and determines if this player is human or computer. This class also runs
+ * one round of the game and makes decision for the next move.
+ *
+ * @author Negar Movaghatian
+ * @since 2020-04-03
+ */
 public class Player {
     // The list of the cards player owns
     private ArrayList<Card> cardsList;
@@ -22,7 +27,7 @@ public class Player {
 
     /**
      * Check if this player has no cards left or not.
-     * @return
+     * @return True if the player has no card left and false otherwise.
      */
     public boolean hasZeroCards() {
         return cardsList.size()==0;
@@ -30,7 +35,7 @@ public class Player {
 
     /**
      * Get the score of the player by adding up their cards' score.
-     * @return
+     * @return The summation of the scores of the cards player owns.
      */
     public int getScore() {
         int score = 0;
@@ -105,6 +110,10 @@ public class Player {
         }
     }
 
+    /**
+     * Check if this player owns a draw card (+2 or wild draw).
+     * @return a list of the draw cards this player owns.
+     */
     public ArrayList<Card> hasDrawCard() {
         ArrayList<Card> drawCards = new ArrayList<>();
         selectValidCards();
@@ -113,29 +122,6 @@ public class Player {
                 || card instanceof WildCard && ((WildCard) card).getType().equals("+4"))
                 drawCards.add(card);
         return drawCards;
-    }
-
-    /**
-     * Run a turn for a human player.
-     */
-    public void computerPlay(){
-        try
-        {
-            Thread.sleep(750);
-        }
-        catch(InterruptedException ex)
-        {
-            Thread.currentThread().interrupt();
-        }
-        selectValidCards();
-        if (validCards.size()!=0) {
-            Random rnd = new Random();
-            int cardNumber = Math.abs(rnd.nextInt()) % validCards.size();
-            validCards.get(cardNumber).putOnTable(this);
-            cardsList.remove(validCards.get(cardNumber));
-        }
-        else
-            drawRandomCard("COMPUTER");
     }
 
     /**
@@ -159,6 +145,29 @@ public class Player {
                 maxColor = color;
             }
         return maxColor;
+    }
+
+    /**
+     * Run a turn for a human player.
+     */
+    public void computerPlay(){
+        try
+        {
+            Thread.sleep(750);
+        }
+        catch(InterruptedException ex)
+        {
+            Thread.currentThread().interrupt();
+        }
+        selectValidCards();
+        if (validCards.size()!=0) {
+            Random rnd = new Random();
+            int cardNumber = Math.abs(rnd.nextInt()) % validCards.size();
+            validCards.get(cardNumber).putOnTable(this);
+            cardsList.remove(validCards.get(cardNumber));
+        }
+        else
+            drawRandomCard("COMPUTER");
     }
 
     /**
