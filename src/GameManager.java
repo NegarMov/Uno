@@ -234,6 +234,7 @@ public class GameManager {
                 if (players.get(turn).getWhoIsPlayer().equals("COMPUTER")) {
                     System.out.println("\n\n[Player " + (turn + 1) + "]");
                     players.get(turn).hasDrawCard().get(0).putOnTable(players.get(turn));
+
                     skipTurn();
                 }
                 else {

@@ -95,6 +95,7 @@ public class Card {
         GameManager.setCardOnTable(this);
         if (!(this instanceof WildCard))
             GameManager.setColorOnTable(color);
+        player.removeCard(this);
         System.out.println(">Puts " + toString() + " On table.");
     }
 

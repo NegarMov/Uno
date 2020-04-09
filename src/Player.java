@@ -53,6 +53,14 @@ public class Player {
     }
 
     /**
+     * Remove a card from player's cards list.
+     * @param cardToRemove The card to remove from the player's owned cards.
+     */
+    public void removeCard(Card cardToRemove) {
+        cardsList.remove(cardToRemove);
+    }
+
+    /**
      * Show all the cards the player has.
      * @param playerName The name of the player to show at the top.
      */
@@ -164,7 +172,6 @@ public class Player {
             Random rnd = new Random();
             int cardNumber = Math.abs(rnd.nextInt()) % validCards.size();
             validCards.get(cardNumber).putOnTable(this);
-            cardsList.remove(validCards.get(cardNumber));
         }
         else
             drawRandomCard("COMPUTER");
@@ -187,7 +194,6 @@ public class Player {
                 chosenCard = scn.nextInt()-1;
             }
             validCards.get(chosenCard).putOnTable(this);
-            cardsList.remove(validCards.get(chosenCard));
 
         }
         else
