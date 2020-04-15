@@ -125,9 +125,9 @@ public class Player {
     public ArrayList<Card> hasDrawCard() {
         ArrayList<Card> drawCards = new ArrayList<>();
         selectValidCards();
-        for (Card card : validCards)
-            if (card instanceof ActionCard && ((ActionCard) card).getType().equals("+2")
-                || card instanceof WildCard && ((WildCard) card).getType().equals("+4"))
+        for (Card card : cardsList)
+            if ((card instanceof ActionCard && ((ActionCard) card).getType().equals("+2") && GameManager.getCardOnTable() instanceof ActionCard && ((ActionCard) GameManager.getCardOnTable()).getType().equals("+2"))
+                || (card instanceof WildCard && ((WildCard) card).getType().equals("+4") && GameManager.getCardOnTable() instanceof WildCard && ((WildCard) GameManager.getCardOnTable()).getType().equals("+4")))
                 drawCards.add(card);
         return drawCards;
     }
